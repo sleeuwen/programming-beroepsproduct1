@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -54,7 +52,7 @@ public class Database {
         try (Connection conn = connect();
             Statement stmt = conn.createStatement()) {
             // insert
-            String sql = "INSERT INTO transacties (titel, bedrag, jaar, maand ) VALUE ('" + titel + "'," + bedrag + "," + jaar + "," + maand +")";
+            String sql = "INSERT INTO transacties (titel, bedrag, jaar, maand ) VALUES ('" + titel + "'," + bedrag + "," + jaar + "," + maand +")";
             
             stmt.executeUpdate(sql);
         } catch (SQLException e) {

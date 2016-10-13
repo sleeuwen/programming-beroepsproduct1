@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package programming.beroepsproduct1;
-
 /**
  *
  * @author Frenky
@@ -101,7 +100,8 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        TransactionDialog f = new TransactionDialog(this, true);
+        f.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
