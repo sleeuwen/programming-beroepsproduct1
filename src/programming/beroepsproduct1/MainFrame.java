@@ -4,17 +4,33 @@
  * and open the template in the editor.
  */
 package programming.beroepsproduct1;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+
 /**
  *
  * @author Frenky
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    int year;
+    int month;
+    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        populateList();
     }
 
     /**
@@ -26,38 +42,45 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
+        btnTransactie = new javax.swing.JButton();
+        boxYear = new javax.swing.JComboBox();
+        boxMonth = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        jLabel2 = new javax.swing.JLabel();
+        txtTotaalbedrag = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Nieuwe Transactie");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnTransactie.setText("Nieuwe Transactie");
+        btnTransactie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTransactieActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
-        jComboBox1.setSelectedIndex(5);
+        boxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
+        boxYear.setSelectedIndex(5);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
+        boxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
+        boxMonth.setSelectedIndex(5);
 
         jLabel1.setText("Totaal:");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel2.setText("....");
+        txtTotaalbedrag.setText("....");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,42 +90,92 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(btnTransactie))
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)))
+                        .addComponent(txtTotaalbedrag)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnTransactie)
+                    .addComponent(boxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(txtTotaalbedrag))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void setMonth( int boxmonth){
+        month = boxmonth;
+    }
+    
+    public void setYear( int boxyear){
+        year = boxyear;
+    }
+    
+    public int getboxYear(){
+//        int year = Integer.parseInt((String)boxYear.getSelectedItem());
+        return year;
+    }
+    
+     public int getboxMonth(){
+//        int month = boxMonth.getSelectedIndex();
+        return month;
+    }
+     
+    public void populateList(){
+        AbstractListModel listModel = new AbstractListModel<Transactie>() {
+//            int year = Integer.parseInt((String)boxYear.getSelectedItem());
+//            int month = Integer.parseInt((String)boxMonth.getSelectedItem());
+            private final ArrayList<Transactie> list = Database.select(year, boxMonth.getSelectedIndex());
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            @Override
+            public int getSize() {
+                return list.size();
+            }
+
+            @Override
+            public Transactie getElementAt(int i) {
+                return list.get(i);
+            }
+        };
+        jList1.setModel(listModel);
+    }
+    
+    private void btnTransactieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactieActionPerformed
         TransactionDialog f = new TransactionDialog(this, true);
+        int boxyear = Integer.parseInt((String)boxYear.getSelectedItem());
+        int boxmonth = (int) this.boxMonth.getSelectedIndex();
+        setMonth(boxmonth);
+        setYear(boxyear);
         f.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnTransactieActionPerformed
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+
+    }//GEN-LAST:event_jList1ValueChanged
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+//        String selected = jList1.getSelectedValue().toString();
+//        txt_titel.setText(selected);
+    }//GEN-LAST:event_jList1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -140,12 +213,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox boxMonth;
+    private javax.swing.JComboBox boxYear;
+    private javax.swing.JButton btnTransactie;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel txtTotaalbedrag;
     // End of variables declaration//GEN-END:variables
 }

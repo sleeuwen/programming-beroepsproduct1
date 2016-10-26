@@ -24,7 +24,10 @@ public class Transactie {
         this.jaar = jaar;
         this.maand = maand;
     }
-
+    
+    
+    
+    
     public int getId() {
         return id;
     }

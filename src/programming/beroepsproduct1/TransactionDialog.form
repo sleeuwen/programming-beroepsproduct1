@@ -27,15 +27,15 @@
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAnnuleer" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txt_titel" min="-2" pref="202" max="-2" attributes="0"/>
+                      <Component id="txtTitel" min="-2" pref="202" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <Component id="double_bedrag" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                      <Component id="doubleBedrag" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="33" max="32767" attributes="0"/>
@@ -48,15 +48,15 @@
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="txt_titel" min="-2" max="-2" attributes="0"/>
+              <Component id="txtTitel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="double_bedrag" min="-2" max="-2" attributes="0"/>
+              <Component id="doubleBedrag" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="17" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAnnuleer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -69,12 +69,12 @@
         <Property name="text" type="java.lang.String" value="Titel"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txt_titel">
+    <Component class="javax.swing.JTextField" name="txtTitel">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_titelActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTitelActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSpinner" name="double_bedrag">
+    <Component class="javax.swing.JSpinner" name="doubleBedrag">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
@@ -89,20 +89,20 @@
         <Property name="text" type="java.lang.String" value="Bedrag"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
         <Property name="text" type="java.lang.String" value="Toevoegen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnAnnuleer">
       <Properties>
         <Property name="text" type="java.lang.String" value="Annuleren"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnnuleerActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
