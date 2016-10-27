@@ -25,9 +25,6 @@ public class Transactie {
         this.maand = maand;
     }
     
-    
-    
-    
     public int getId() {
         return id;
     }

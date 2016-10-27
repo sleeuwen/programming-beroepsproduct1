@@ -21,9 +21,6 @@ import javax.swing.ListSelectionModel;
  * @author Frenky
  */
 public class MainFrame extends javax.swing.JFrame {
-
-    int year;
-    int month;
     
     /**
      * Creates new form MainFrame
@@ -47,8 +44,12 @@ public class MainFrame extends javax.swing.JFrame {
         boxMonth = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        txtTotaalbedrag = new javax.swing.JLabel();
+        list = new javax.swing.JList();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        total = new programming.beroepsproduct1.CurrencyLabel();
+        monthTotal = new programming.beroepsproduct1.CurrencyLabel();
+        previousTotal = new programming.beroepsproduct1.CurrencyLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,26 +62,48 @@ public class MainFrame extends javax.swing.JFrame {
 
         boxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
         boxYear.setSelectedIndex(5);
+        boxYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxYearActionPerformed(evt);
+            }
+        });
 
         boxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
         boxMonth.setSelectedIndex(5);
+        boxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxMonthActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Totaal:");
+        jLabel1.setText("Nieuw Saldo:");
 
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+        list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        list.setCellRenderer(new Transactionrender());
+        list.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
+                listMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                listMousePressed(evt);
             }
         });
-        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+        list.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jList1ValueChanged(evt);
+                listValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(list);
 
-        txtTotaalbedrag.setText("....");
+        jLabel2.setText("Deze maand:");
+
+        jLabel3.setText("Vorige Saldo:");
+
+        total.setText("currencyLabel1");
+
+        monthTotal.setText("currencyLabel2");
+
+        previousTotal.setText("currencyLabel3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,53 +121,59 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotaalbedrag)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(monthTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(previousTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTransactie)
                     .addComponent(boxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTransactie))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(previousTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(monthTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtTotaalbedrag))
+                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void setMonth( int boxmonth){
-        month = boxmonth;
-    }
-    
-    public void setYear( int boxyear){
-        year = boxyear;
-    }
-    
     public int getboxYear(){
-//        int year = Integer.parseInt((String)boxYear.getSelectedItem());
+        int year = Integer.parseInt((String)boxYear.getSelectedItem());
         return year;
     }
     
      public int getboxMonth(){
-//        int month = boxMonth.getSelectedIndex();
+        int month = boxMonth.getSelectedIndex();
         return month;
     }
      
     public void populateList(){
         AbstractListModel listModel = new AbstractListModel<Transactie>() {
-//            int year = Integer.parseInt((String)boxYear.getSelectedItem());
-//            int month = Integer.parseInt((String)boxMonth.getSelectedItem());
-            private final ArrayList<Transactie> list = Database.select(year, boxMonth.getSelectedIndex());
+            private final ArrayList<Transactie> list = Database.select(getboxYear(), getboxMonth());
 
             @Override
             public int getSize() {
@@ -156,26 +185,54 @@ public class MainFrame extends javax.swing.JFrame {
                 return list.get(i);
             }
         };
-        jList1.setModel(listModel);
+        list.setModel(listModel);
+        updateTotal();
+    }
+    
+    public void updateTotal(){
+        double total = Database.totalBedrag(getboxYear(), getboxMonth());
+        int year = getboxYear();
+        int month = getboxMonth() - 1;
+        
+        if(month < 0){
+            month = 11;
+            year --;
+        }
+        double total2 = Database.totalBedrag(year, month);
+        this.previousTotal.setAmount(total2);
+        this.monthTotal.setAmount(total - total2);
+        this.total.setAmount(total);
     }
     
     private void btnTransactieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactieActionPerformed
-        TransactionDialog f = new TransactionDialog(this, true);
-        int boxyear = Integer.parseInt((String)boxYear.getSelectedItem());
-        int boxmonth = (int) this.boxMonth.getSelectedIndex();
-        setMonth(boxmonth);
-        setYear(boxyear);
+        TransactionDialog f = new TransactionDialog(this, true, getboxYear(), getboxMonth());
         f.setVisible(true);
+        populateList();
     }//GEN-LAST:event_btnTransactieActionPerformed
 
-    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+    private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
 
-    }//GEN-LAST:event_jList1ValueChanged
+    }//GEN-LAST:event_listValueChanged
 
-    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+    private void listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMouseClicked
 //        String selected = jList1.getSelectedValue().toString();
 //        txt_titel.setText(selected);
-    }//GEN-LAST:event_jList1MouseClicked
+    }//GEN-LAST:event_listMouseClicked
+
+    private void boxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxYearActionPerformed
+        populateList();
+    }//GEN-LAST:event_boxYearActionPerformed
+
+    private void boxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxMonthActionPerformed
+        populateList();
+    }//GEN-LAST:event_boxMonthActionPerformed
+
+    private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
+        if(evt.isPopupTrigger()){
+            list.setSelectedIndex(list.locationToIndex(evt.getPoint()));
+            
+        }
+    }//GEN-LAST:event_listMousePressed
 
     /**
      * @param args the command line arguments
@@ -217,8 +274,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox boxYear;
     private javax.swing.JButton btnTransactie;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel txtTotaalbedrag;
+    private javax.swing.JList list;
+    private programming.beroepsproduct1.CurrencyLabel monthTotal;
+    private programming.beroepsproduct1.CurrencyLabel previousTotal;
+    private programming.beroepsproduct1.CurrencyLabel total;
     // End of variables declaration//GEN-END:variables
 }

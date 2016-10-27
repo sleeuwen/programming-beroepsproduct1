@@ -11,12 +11,17 @@ package programming.beroepsproduct1;
  */
 public class TransactionDialog extends javax.swing.JDialog {
 
+    int year;
+    int month;
+    
     /**
      * Creates new form TransactionDialog
      */
-    public TransactionDialog(java.awt.Frame parent, boolean modal) {
+    public TransactionDialog(java.awt.Frame parent, boolean modal, int year, int month) {
         super(parent, modal);
         initComponents();
+        this.year = year;
+        this.month = month;
     }
 
     /**
@@ -104,8 +109,7 @@ public class TransactionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        MainFrame mf = new MainFrame();
-        Database.insert(txtTitel.getText(), (double) doubleBedrag.getValue(), mf.getboxYear(), mf.getboxMonth());
+        Database.insert(txtTitel.getText(), (double) doubleBedrag.getValue(), year, month);
         this.dispose();
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -147,7 +151,7 @@ public class TransactionDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TransactionDialog dialog = new TransactionDialog(new javax.swing.JFrame(), true);
+                TransactionDialog dialog = new TransactionDialog(new javax.swing.JFrame(), true, 2016, 5);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

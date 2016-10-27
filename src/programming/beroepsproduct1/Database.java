@@ -105,18 +105,17 @@ public class Database {
         return transacties;
      }
       
-     public static void totalbedrag(int jaar, int maand){
-        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar="+ jaar +" maand="+maand+";";
+     public static double totalBedrag(int jaar, int maand){
+        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar <="+ jaar +" AND maand <="+maand+";";
          try (Connection conn = connect();
             Statement stmt = conn.createStatement(); 
             ResultSet rs = stmt.executeQuery(sql)){
             
-                while (rs.next()) {
-                    Double bedrag = rs.getDouble("bedrag");
-//                    MainFrame.txtTotaalbedrag.setText(bedrag);
-            }
+             rs.next();
+             return rs.getDouble(1);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
+         return 0;
     }
 }
