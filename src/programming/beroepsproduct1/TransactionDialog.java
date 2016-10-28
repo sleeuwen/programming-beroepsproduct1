@@ -5,6 +5,8 @@
  */
 package programming.beroepsproduct1;
 
+import javax.swing.*;
+
 /**
  *
  * @author Frenky
@@ -37,6 +39,7 @@ public class TransactionDialog extends javax.swing.JDialog {
         this.month = month;
         doubleBedrag.setValue(transactie.getBedrag());
         txtTitel.setText(transactie.getTitle());
+        btnAdd.setText("Opslaan");
     }
 
     /**
@@ -124,6 +127,11 @@ public class TransactionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if (txtTitel.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Je moet een titel invoeren", "Geen titel ingevoerd", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // If this dialog was created with an existing transaction update it, else insert a new one.
         if (this.id > 0) {
             Database.update(this.id, txtTitel.getText(), (double) doubleBedrag.getValue());
