@@ -11,6 +11,7 @@ package programming.beroepsproduct1;
  */
 public class TransactionDialog extends javax.swing.JDialog {
 
+    int id = 0;
     int year;
     int month;
     
@@ -22,6 +23,20 @@ public class TransactionDialog extends javax.swing.JDialog {
         initComponents();
         this.year = year;
         this.month = month;
+    }
+
+    /**
+     * Creates a new form TransactionDialog for the given Transaction
+     */
+    public TransactionDialog(java.awt.Frame parent, boolean modal, Transactie transactie) {
+        super(parent, modal);
+        initComponents();
+
+        this.id = transactie.getId();
+        this.year = year;
+        this.month = month;
+        doubleBedrag.setValue(transactie.getBedrag());
+        txtTitel.setText(transactie.getTitle());
     }
 
     /**
@@ -109,7 +124,13 @@ public class TransactionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        Database.insert(txtTitel.getText(), (double) doubleBedrag.getValue(), year, month);
+        // If this dialog was created with an existing transaction update it, else insert a new one.
+        if (this.id > 0) {
+            Database.update(this.id, txtTitel.getText(), (double) doubleBedrag.getValue());
+        } else {
+            Database.insert(txtTitel.getText(), (double) doubleBedrag.getValue(), year, month);
+        }
+
         this.dispose();
     }//GEN-LAST:event_btnAddActionPerformed
 

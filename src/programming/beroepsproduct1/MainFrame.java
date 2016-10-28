@@ -5,13 +5,18 @@
  */
 package programming.beroepsproduct1;
 
+import java.awt.event.ActionEvent;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -230,7 +235,37 @@ public class MainFrame extends javax.swing.JFrame {
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
         if(evt.isPopupTrigger()){
             list.setSelectedIndex(list.locationToIndex(evt.getPoint()));
-            
+
+            JMenuItem edit = new JMenuItem(new AbstractAction("Bewerken") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Show the dialog and update the list afterwards.
+                    Transactie transactie = (Transactie) list.getSelectedValue();
+                    TransactionDialog dialog = new TransactionDialog(MainFrame.this, true, transactie);
+                    dialog.setVisible(true);
+                    populateList();
+                }
+            });
+
+            JMenuItem delete = new JMenuItem(new AbstractAction("Verwijderen") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int res = JOptionPane.showConfirmDialog(list, "Weet je zeker dat je deze transactie wilt verwijderen?", null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                    if (res == JOptionPane.YES_OPTION) {
+                        // Remove transaction from the database and update the list.
+                        Transactie transactie = (Transactie) list.getSelectedValue();
+                        Database.remove(transactie.getId());
+                        populateList();
+                    }
+                }
+            });
+
+            // Create context menu and show at the clicked location.
+            JPopupMenu menu = new JPopupMenu();
+            menu.add(edit);
+            menu.add(delete);
+            menu.show(list, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_listMousePressed
 

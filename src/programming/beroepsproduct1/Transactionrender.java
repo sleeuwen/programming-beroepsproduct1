@@ -6,6 +6,7 @@
 package programming.beroepsproduct1;
 
 import java.awt.Component;
+import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,6 +23,7 @@ import javax.swing.SwingConstants;
 public class Transactionrender extends JPanel implements ListCellRenderer<Transactie> {
 
    public Transactionrender(){
+       super();
        setOpaque(true);
        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
        setBorder(BorderFactory.createEmptyBorder(2,5, 2, 5));
@@ -43,8 +45,9 @@ public class Transactionrender extends JPanel implements ListCellRenderer<Transa
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
         }else{
-            setBackground(list.getBackground());
-            setForeground(list.getForeground());
+            // Fix for Nimbus background color.
+            setBackground(new Color(list.getBackground().getRGB()));
+            setForeground(new Color(list.getForeground().getRGB()));
         }
         
         setEnabled(true);
