@@ -7,9 +7,9 @@ package programming.beroepsproduct1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -19,17 +19,17 @@ import java.util.ArrayList;
 public class Database {
     
     public static void init(){
+        String sql = "CREATE TABLE IF NOT EXISTS transacties (" +
+                "id INTEGER PRIMARY KEY," +
+                "titel TEXT NOT NULL," +
+                "bedrag REAL NOT NULL," +
+                "jaar INT NOT NULL," +
+                "maand INT NOT NULL" +
+                ");";
+
         try (Connection conn = connect();
-            Statement stmt = conn.createStatement()) {
-            // create a new table
-            String sql = "CREATE TABLE IF NOT EXISTS transacties (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	titel text NOT NULL,\n"
-                + "	bedrag real NOT NULL,\n"
-                + "	jaar int NOT NULL,\n"
-                + "	maand int NOT NULL"
-                + ");";
-            stmt.execute(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,37 +49,44 @@ public class Database {
      }     
      
      public static void insert(String titel, double bedrag, int jaar, int maand){
+         String sql = "INSERT INTO transacties (titel, bedrag, jaar, maand) VALUES (?, ?, ?, ?);";
+
         try (Connection conn = connect();
-            Statement stmt = conn.createStatement()) {
-            // insert
-            String sql = "INSERT INTO transacties (titel, bedrag, jaar, maand ) VALUES ('" + titel + "'," + bedrag + "," + jaar + "," + maand +")";
-            
-            stmt.executeUpdate(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, titel);
+            stmt.setDouble(2, bedrag);
+            stmt.setInt(3, jaar);
+            stmt.setInt(4, maand);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
      }
      
      public static void remove(int id){
+         String sql = "DELETE FROM transacties WHERE id = ?;";
+
         try (Connection conn = connect();
-            Statement stmt = conn.createStatement()) {
-            // insert
-            String sql = "DELETE FROM transacties WHERE id="+ id +";";
-            
-            stmt.executeUpdate(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
      }
      
      public static void update(int id, String titel, double bedrag){
+         String sql = "UPDATE transacties SET titel = ?, bedrag = ? WHERE id = ?;";
+
         try (Connection conn = connect();
-            Statement stmt = conn.createStatement()) {
-            // insert
-            //            UPDATE transacties SET title='de titel   ', bedrag=20.95        WHERE id=1;
-            String sql = "UPDATE transacties SET titel='"+ titel +"', bedrag="+ bedrag +" WHERE id="+ id +";";
-            
-            stmt.executeUpdate(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, titel);
+            stmt.setDouble(2, bedrag);
+            stmt.setInt(3, id);
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,10 +94,14 @@ public class Database {
      
       public static ArrayList<Transactie> select(int jaar, int maand){
         ArrayList<Transactie> transacties = new ArrayList<>();
-        String sql = "SELECT id, titel, bedrag, jaar, maand FROM transacties WHERE jaar="+ jaar + " AND maand=" + maand +";";
+        String sql = "SELECT id, titel, bedrag, jaar, maand FROM transacties WHERE jaar = ? AND maand = ?;";
+
         try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, jaar);
+            stmt.setInt(2, maand);
+
+            ResultSet rs = stmt.executeQuery();
             
             // loop through the result set
             while (rs.next()) {
@@ -106,11 +117,14 @@ public class Database {
      }
       
      public static double totalBedrag(int jaar, int maand){
-        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar <"+ jaar +" OR (jaar = "+ jaar +" AND maand <="+maand+");";
+        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar < ?1 OR (jaar = ?1 AND maand <= ?2);";
          try (Connection conn = connect();
-            Statement stmt = conn.createStatement(); 
-            ResultSet rs = stmt.executeQuery(sql)){
-            
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+             stmt.setInt(1, jaar);
+             stmt.setInt(2, maand);
+
+             ResultSet rs = stmt.executeQuery();
+
              rs.next();
              return rs.getDouble(1);
         } catch (SQLException e) {
