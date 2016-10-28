@@ -1,17 +1,18 @@
 package programming.beroepsproduct1;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class TransactionDialog extends javax.swing.JDialog {
-    int id = 0;
-    int year;
-    int month;
+    private int id = 0;
+    private int year;
+    private int month;
 
     /**
      * Creates new form TransactionDialog
      */
-    public TransactionDialog(java.awt.Frame parent, boolean modal, int year, int month) {
-        super(parent, modal);
+    public TransactionDialog(Frame parent, int year, int month) {
+        super(parent, true);
 
         initComponents();
         this.year = year;
@@ -21,13 +22,11 @@ public class TransactionDialog extends javax.swing.JDialog {
     /**
      * Creates a new form TransactionDialog for the given Transaction
      */
-    public TransactionDialog(java.awt.Frame parent, boolean modal, Transactie transactie) {
-        super(parent, modal);
+    public TransactionDialog(Frame parent, Transactie transactie) {
+        super(parent, true);
 
         initComponents();
         this.id = transactie.getId();
-        this.year = year;
-        this.month = month;
         doubleBedrag.setValue(transactie.getBedrag());
         txtTitel.setText(transactie.getTitle());
         btnAdd.setText("Opslaan");
@@ -161,7 +160,7 @@ public class TransactionDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TransactionDialog dialog = new TransactionDialog(new javax.swing.JFrame(), true, 2016, 5);
+                TransactionDialog dialog = new TransactionDialog(new javax.swing.JFrame(), 2016, 5);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

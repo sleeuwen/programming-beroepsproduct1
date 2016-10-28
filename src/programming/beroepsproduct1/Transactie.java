@@ -1,11 +1,11 @@
 package programming.beroepsproduct1;
 
 public class Transactie {
-    private int id;
-    private String title;
-    private double bedrag;
-    private int jaar;
-    private int maand;
+    private final int id;
+    private final String title;
+    private final double bedrag;
+    private final int jaar;
+    private final int maand;
 
     public Transactie(int id, String title, double bedrag, int jaar, int maand) {
         this.id = id;

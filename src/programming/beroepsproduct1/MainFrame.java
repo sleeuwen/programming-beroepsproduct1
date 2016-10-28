@@ -137,15 +137,15 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public int getboxYear() {
+    private int getboxYear() {
         return Integer.parseInt((String) boxYear.getSelectedItem());
     }
 
-    public int getboxMonth() {
+    private int getboxMonth() {
         return boxMonth.getSelectedIndex();
     }
 
-    public void populateList() {
+    private void populateList() {
         AbstractListModel listModel = new AbstractListModel<Transactie>() {
             private final ArrayList<Transactie> list = Database.select(getboxYear(), getboxMonth());
 
@@ -164,7 +164,7 @@ public class MainFrame extends javax.swing.JFrame {
         updateTotal();
     }
 
-    public void updateTotal() {
+    private void updateTotal() {
         double total = Database.totalBedrag(getboxYear(), getboxMonth());
         int year = getboxYear();
         int month = getboxMonth() - 1;
@@ -180,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void btnTransactieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactieActionPerformed
-        TransactionDialog f = new TransactionDialog(this, true, getboxYear(), getboxMonth());
+        TransactionDialog f = new TransactionDialog(this, getboxYear(), getboxMonth());
         f.setVisible(true);
         populateList();
     }//GEN-LAST:event_btnTransactieActionPerformed
@@ -202,7 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
                 public void actionPerformed(ActionEvent e) {
                     // Show the dialog and update the list afterwards.
                     Transactie transactie = (Transactie) list.getSelectedValue();
-                    TransactionDialog dialog = new TransactionDialog(MainFrame.this, true, transactie);
+                    TransactionDialog dialog = new TransactionDialog(MainFrame.this, transactie);
                     dialog.setVisible(true);
                     populateList();
                 }
