@@ -31,7 +31,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="boxMonth" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="95" max="32767" attributes="0"/>
-                      <Component id="btnTransactie" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
@@ -62,7 +62,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="boxYear" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="boxMonth" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnTransactie" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="233" max="32767" attributes="0"/>
@@ -87,12 +87,12 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="btnTransactie">
+    <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nieuwe Transactie"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTransactieActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="boxYear">
@@ -162,14 +162,14 @@
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
             <Property name="cellRenderer" type="javax.swing.ListCellRenderer" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new Transactionrender()" type="code"/>
+              <Connection code="new TransactionRenderer()" type="code"/>
             </Property>
           </Properties>
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listMousePressed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Transactie&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Transaction&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>

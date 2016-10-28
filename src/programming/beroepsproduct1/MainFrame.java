@@ -11,7 +11,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        populateList();
+        updateList();
     }
 
     /**
@@ -23,7 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnTransactie = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         boxYear = new javax.swing.JComboBox<>();
         boxMonth = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -37,10 +37,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnTransactie.setText("Nieuwe Transactie");
-        btnTransactie.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setText("Nieuwe Transactie");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTransactieActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
@@ -63,7 +63,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText("Nieuw Saldo:");
 
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        list.setCellRenderer(new Transactionrender());
+        list.setCellRenderer(new TransactionRenderer());
         list.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 listMousePressed(evt);
@@ -93,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addComponent(btnTransactie))
+                        .addComponent(btnAdd))
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -116,7 +116,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTransactie))
+                    .addComponent(btnAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,17 +137,17 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private int getboxYear() {
+    private int getSelectedYear() {
         return Integer.parseInt((String) boxYear.getSelectedItem());
     }
 
-    private int getboxMonth() {
+    private int getSelectedMonth() {
         return boxMonth.getSelectedIndex();
     }
 
-    private void populateList() {
-        AbstractListModel<Transactie> listModel = new AbstractListModel<Transactie>() {
-            private final ArrayList<Transactie> list = Database.select(getboxYear(), getboxMonth());
+    private void updateList() {
+        AbstractListModel<Transaction> listModel = new AbstractListModel<Transaction>() {
+            private final ArrayList<Transaction> list = Database.select(getSelectedYear(), getSelectedMonth());
 
             @Override
             public int getSize() {
@@ -155,7 +155,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             @Override
-            public Transactie getElementAt(int i) {
+            public Transaction getElementAt(int i) {
                 return list.get(i);
             }
         };
@@ -165,32 +165,34 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void updateTotal() {
-        double total = Database.totalBedrag(getboxYear(), getboxMonth());
-        int year = getboxYear();
-        int month = getboxMonth() - 1;
+        double total = Database.totalAmount(getSelectedYear(), getSelectedMonth());
+        int year = getSelectedYear();
+        int month = getSelectedMonth() - 1;
 
         if (month < 0) {
             month = 11;
             year--;
         }
-        double total2 = Database.totalBedrag(year, month);
-        this.previousTotal.setAmount(total2);
-        this.monthTotal.setAmount(total - total2);
+
+        double previousTotal = Database.totalAmount(year, month);
+        this.previousTotal.setAmount(previousTotal);
+        this.monthTotal.setAmount(total - previousTotal);
         this.total.setAmount(total);
     }
 
-    private void btnTransactieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactieActionPerformed
-        TransactionDialog f = new TransactionDialog(this, getboxYear(), getboxMonth());
-        f.setVisible(true);
-        populateList();
-    }//GEN-LAST:event_btnTransactieActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        TransactionDialog dialog = new TransactionDialog(this, getSelectedYear(), getSelectedMonth());
+        dialog.setVisible(true);
+
+        updateList();
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void boxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxYearActionPerformed
-        populateList();
+        updateList();
     }//GEN-LAST:event_boxYearActionPerformed
 
     private void boxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxMonthActionPerformed
-        populateList();
+        updateList();
     }//GEN-LAST:event_boxMonthActionPerformed
 
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
@@ -201,10 +203,11 @@ public class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Show the dialog and update the list afterwards.
-                    Transactie transactie = list.getSelectedValue();
-                    TransactionDialog dialog = new TransactionDialog(MainFrame.this, transactie);
+                    Transaction transaction = list.getSelectedValue();
+                    TransactionDialog dialog = new TransactionDialog(MainFrame.this, transaction);
                     dialog.setVisible(true);
-                    populateList();
+
+                    updateList();
                 }
             });
 
@@ -215,9 +218,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                     if (res == JOptionPane.YES_OPTION) {
                         // Remove transaction from the database and update the list.
-                        Transactie transactie = list.getSelectedValue();
-                        Database.remove(transactie.getId());
-                        populateList();
+                        Transaction transaction = list.getSelectedValue();
+                        Database.remove(transaction.getId());
+
+                        updateList();
                     }
                 }
             });
@@ -268,12 +272,12 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxMonth;
     private javax.swing.JComboBox<String> boxYear;
-    private javax.swing.JButton btnTransactie;
+    private javax.swing.JButton btnAdd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<Transactie> list;
+    private javax.swing.JList<Transaction> list;
     private programming.beroepsproduct1.CurrencyLabel monthTotal;
     private programming.beroepsproduct1.CurrencyLabel previousTotal;
     private programming.beroepsproduct1.CurrencyLabel total;

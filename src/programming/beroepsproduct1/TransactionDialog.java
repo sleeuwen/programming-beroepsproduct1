@@ -22,13 +22,13 @@ public class TransactionDialog extends javax.swing.JDialog {
     /**
      * Creates a new form TransactionDialog for the given Transaction
      */
-    public TransactionDialog(Frame parent, Transactie transactie) {
+    public TransactionDialog(Frame parent, Transaction transaction) {
         super(parent, true);
 
         initComponents();
-        this.id = transactie.getId();
-        doubleBedrag.setValue(transactie.getBedrag());
-        txtTitel.setText(transactie.getTitle());
+        this.id = transaction.getId();
+        amountField.setValue(transaction.getAmount());
+        titleField.setText(transaction.getTitle());
         btnAdd.setText("Opslaan");
     }
 
@@ -42,18 +42,18 @@ public class TransactionDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtTitel = new javax.swing.JTextField();
-        doubleBedrag = new javax.swing.JSpinner();
+        titleField = new javax.swing.JTextField();
+        amountField = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
-        btnAnnuleer = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Titel");
 
-        doubleBedrag.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
-        doubleBedrag.setEditor(new javax.swing.JSpinner.NumberEditor(doubleBedrag, "#,##0.00"));
+        amountField.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
+        amountField.setEditor(new javax.swing.JSpinner.NumberEditor(amountField, "#,##0.00"));
 
         jLabel2.setText("Bedrag");
 
@@ -64,10 +64,10 @@ public class TransactionDialog extends javax.swing.JDialog {
             }
         });
 
-        btnAnnuleer.setText("Annuleren");
-        btnAnnuleer.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setText("Annuleren");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnnuleerActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
@@ -79,14 +79,14 @@ public class TransactionDialog extends javax.swing.JDialog {
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAnnuleer)
+                        .addComponent(btnCancel)
                         .addGap(41, 41, 41)
                         .addComponent(btnAdd))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtTitel, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)
                         .addComponent(jLabel2)
-                        .addComponent(doubleBedrag, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -95,15 +95,15 @@ public class TransactionDialog extends javax.swing.JDialog {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtTitel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(doubleBedrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
-                    .addComponent(btnAnnuleer))
+                    .addComponent(btnCancel))
                 .addContainerGap())
         );
 
@@ -111,24 +111,24 @@ public class TransactionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtTitel.getText().trim().isEmpty()) {
+        if (titleField.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Je moet een titel invoeren", "Geen titel ingevoerd", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // If this dialog was created with an existing transaction update it, else insert a new one.
         if (this.id > 0) {
-            Database.update(this.id, txtTitel.getText(), (double) doubleBedrag.getValue());
+            Database.update(this.id, titleField.getText(), (double) amountField.getValue());
         } else {
-            Database.insert(txtTitel.getText(), (double) doubleBedrag.getValue(), year, month);
+            Database.insert(titleField.getText(), (double) amountField.getValue(), year, month);
         }
 
         this.dispose();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnAnnuleerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnuleerActionPerformed
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnAnnuleerActionPerformed
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,11 +173,11 @@ public class TransactionDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner amountField;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnAnnuleer;
-    private javax.swing.JSpinner doubleBedrag;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField txtTitel;
+    private javax.swing.JTextField titleField;
     // End of variables declaration//GEN-END:variables
 }

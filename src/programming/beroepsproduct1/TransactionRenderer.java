@@ -3,8 +3,8 @@ package programming.beroepsproduct1;
 import javax.swing.*;
 import java.awt.*;
 
-public class Transactionrender extends JPanel implements ListCellRenderer<Transactie> {
-    public Transactionrender() {
+public class TransactionRenderer extends JPanel implements ListCellRenderer<Transaction> {
+    public TransactionRenderer() {
         super();
 
         setOpaque(true);
@@ -13,11 +13,11 @@ public class Transactionrender extends JPanel implements ListCellRenderer<Transa
     }
 
     @Override
-    public Component getListCellRendererComponent(JList<? extends Transactie> list, Transactie transactie, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Transaction> list, Transaction transaction, int index, boolean isSelected, boolean cellHasFocus) {
         setComponentOrientation(list.getComponentOrientation());
 
-        JLabel title = new JLabel(transactie.getTitle(), SwingConstants.LEFT);
-        CurrencyLabel amount = new CurrencyLabel(transactie.getBedrag(), SwingConstants.RIGHT);
+        JLabel title = new JLabel(transaction.getTitle(), SwingConstants.LEFT);
+        CurrencyLabel amount = new CurrencyLabel(transaction.getAmount(), SwingConstants.RIGHT);
 
         removeAll();
         add(title);

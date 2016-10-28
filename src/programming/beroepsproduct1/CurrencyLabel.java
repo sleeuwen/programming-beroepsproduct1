@@ -11,8 +11,8 @@ public class CurrencyLabel extends JLabel {
         super();
     }
 
-    public CurrencyLabel(double amount, int horizontalAligment) {
-        super("", horizontalAligment);
+    public CurrencyLabel(double amount, int horizontalAlignment) {
+        super("", horizontalAlignment);
 
         setAmount(amount);
     }
