@@ -70,9 +70,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTitel">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTitelActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="doubleBedrag">
       <Properties>

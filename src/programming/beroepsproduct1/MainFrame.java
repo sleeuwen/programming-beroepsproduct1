@@ -65,16 +65,8 @@ public class MainFrame extends javax.swing.JFrame {
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         list.setCellRenderer(new Transactionrender());
         list.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                listMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 listMousePressed(evt);
-            }
-        });
-        list.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                listValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(list);
@@ -192,15 +184,6 @@ public class MainFrame extends javax.swing.JFrame {
         f.setVisible(true);
         populateList();
     }//GEN-LAST:event_btnTransactieActionPerformed
-
-    private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
-
-    }//GEN-LAST:event_listValueChanged
-
-    private void listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMouseClicked
-//        String selected = jList1.getSelectedValue().toString();
-//        txt_titel.setText(selected);
-    }//GEN-LAST:event_listMouseClicked
 
     private void boxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxYearActionPerformed
         populateList();

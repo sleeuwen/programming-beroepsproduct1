@@ -53,13 +53,7 @@ public class TransactionDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Titel");
 
-        txtTitel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTitelActionPerformed(evt);
-            }
-        });
-
-        doubleBedrag.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        doubleBedrag.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
         doubleBedrag.setEditor(new javax.swing.JSpinner.NumberEditor(doubleBedrag, "#,##0.00"));
 
         jLabel2.setText("Bedrag");
@@ -136,10 +130,6 @@ public class TransactionDialog extends javax.swing.JDialog {
     private void btnAnnuleerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnuleerActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnAnnuleerActionPerformed
-
-    private void txtTitelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTitelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTitelActionPerformed
 
     /**
      * @param args the command line arguments
