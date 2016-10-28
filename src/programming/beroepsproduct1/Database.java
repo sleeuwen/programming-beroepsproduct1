@@ -4,6 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Database {
+    private static final String DB_NAME = "transactions.db";
+    private static final String DB_URL = "jdbc:sqlite:" + DB_NAME;
+
+    private static Connection connect() throws SQLException {
+        return DriverManager.getConnection(DB_URL);
+    }
+
     public static void init() {
         String sql = "CREATE TABLE IF NOT EXISTS transacties (" +
                 "id INTEGER PRIMARY KEY," +
@@ -19,19 +26,6 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private static Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:Database.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return conn;
     }
 
     public static void insert(String titel, double bedrag, int jaar, int maand) {
