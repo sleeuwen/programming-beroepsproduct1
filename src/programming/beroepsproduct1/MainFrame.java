@@ -24,11 +24,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         btnTransactie = new javax.swing.JButton();
-        boxYear = new javax.swing.JComboBox();
-        boxMonth = new javax.swing.JComboBox();
+        boxYear = new javax.swing.JComboBox<>();
+        boxMonth = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        list = new javax.swing.JList();
+        list = new javax.swing.JList<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         total = new programming.beroepsproduct1.CurrencyLabel();
@@ -44,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        boxYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
+        boxYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
         boxYear.setSelectedIndex(5);
         boxYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -52,7 +52,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        boxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
+        boxMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
         boxMonth.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
         boxMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,7 +146,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void populateList() {
-        AbstractListModel listModel = new AbstractListModel<Transactie>() {
+        AbstractListModel<Transactie> listModel = new AbstractListModel<Transactie>() {
             private final ArrayList<Transactie> list = Database.select(getboxYear(), getboxMonth());
 
             @Override
@@ -201,7 +201,7 @@ public class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Show the dialog and update the list afterwards.
-                    Transactie transactie = (Transactie) list.getSelectedValue();
+                    Transactie transactie = list.getSelectedValue();
                     TransactionDialog dialog = new TransactionDialog(MainFrame.this, transactie);
                     dialog.setVisible(true);
                     populateList();
@@ -215,7 +215,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                     if (res == JOptionPane.YES_OPTION) {
                         // Remove transaction from the database and update the list.
-                        Transactie transactie = (Transactie) list.getSelectedValue();
+                        Transactie transactie = list.getSelectedValue();
                         Database.remove(transactie.getId());
                         populateList();
                     }
@@ -266,14 +266,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox boxMonth;
-    private javax.swing.JComboBox boxYear;
+    private javax.swing.JComboBox<String> boxMonth;
+    private javax.swing.JComboBox<String> boxYear;
     private javax.swing.JButton btnTransactie;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList list;
+    private javax.swing.JList<Transactie> list;
     private programming.beroepsproduct1.CurrencyLabel monthTotal;
     private programming.beroepsproduct1.CurrencyLabel previousTotal;
     private programming.beroepsproduct1.CurrencyLabel total;
