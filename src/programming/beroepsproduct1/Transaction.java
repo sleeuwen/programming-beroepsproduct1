@@ -1,5 +1,8 @@
 package programming.beroepsproduct1;
 
+/**
+ * A representation of a transaction from the database.
+ */
 public class Transaction {
     private final int id;
     private final String title;

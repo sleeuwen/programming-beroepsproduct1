@@ -3,10 +3,15 @@ package programming.beroepsproduct1;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Custom ListCellRenderer implementation to display a Transaction.
+ */
 public class TransactionRenderer extends JPanel implements ListCellRenderer<Transaction> {
     public TransactionRenderer() {
         super();
 
+        // Set defaults for all cells
+        setEnabled(true);
         setOpaque(true);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
@@ -33,7 +38,6 @@ public class TransactionRenderer extends JPanel implements ListCellRenderer<Tran
             setForeground(new Color(list.getForeground().getRGB()));
         }
 
-        setEnabled(true);
         setFont(list.getFont());
 
         return this;

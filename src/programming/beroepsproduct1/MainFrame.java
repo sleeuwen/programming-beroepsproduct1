@@ -137,14 +137,23 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * The currently selected year.
+     */
     private int getSelectedYear() {
         return Integer.parseInt((String) boxYear.getSelectedItem());
     }
 
+    /**
+     * The currently selected month.
+     */
     private int getSelectedMonth() {
         return boxMonth.getSelectedIndex();
     }
 
+    /**
+     * Update the list with the transactions from the database.
+     */
     private void updateList() {
         AbstractListModel<Transaction> listModel = new AbstractListModel<Transaction>() {
             private final ArrayList<Transaction> list = Database.select(getSelectedYear(), getSelectedMonth());
@@ -164,6 +173,9 @@ public class MainFrame extends javax.swing.JFrame {
         updateTotal();
     }
 
+    /**
+     * Update the previous total, month total and current total values.
+     */
     private void updateTotal() {
         double total = Database.totalAmount(getSelectedYear(), getSelectedMonth());
         int year = getSelectedYear();
@@ -197,6 +209,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
         if (evt.isPopupTrigger()) {
+            // Update the selected item.
             list.setSelectedIndex(list.locationToIndex(evt.getPoint()));
 
             JMenuItem edit = new JMenuItem(new AbstractAction("Bewerken") {

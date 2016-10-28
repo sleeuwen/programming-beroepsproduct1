@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+/**
+ * A label which changes the foreground color depending on the given amount
+ */
 public class CurrencyLabel extends JLabel {
     private static final DecimalFormat formatter = new DecimalFormat(" € #,##0.00");
 

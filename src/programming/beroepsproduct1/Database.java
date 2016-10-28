@@ -28,6 +28,9 @@ public class Database {
         }
     }
 
+    /**
+     * Insert a new transaction into the database.
+     */
     public static void insert(String title, double amount, int year, int month) {
         String sql = "INSERT INTO transactions (title, amount, year, month) VALUES (?, ?, ?, ?);";
 
@@ -44,6 +47,9 @@ public class Database {
         }
     }
 
+    /**
+     * Remove a transaction from the database.
+     */
     public static void remove(int id) {
         String sql = "DELETE FROM transactions WHERE id = ?;";
 
@@ -57,6 +63,9 @@ public class Database {
         }
     }
 
+    /**
+     * Update the details of a given transaction in the database.
+     */
     public static void update(int id, String title, double amount) {
         String sql = "UPDATE transactions SET title = ?, amount = ? WHERE id = ?;";
 
@@ -72,6 +81,9 @@ public class Database {
         }
     }
 
+    /**
+     * Retrieve all transactions for the given year and month.
+     */
     public static ArrayList<Transaction> select(int year, int month) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT id, title, amount, year, month FROM transactions WHERE year = ? AND month = ?;";
@@ -100,6 +112,9 @@ public class Database {
         return transactions;
     }
 
+    /**
+     * Retrieve the user's balance up until a given year and month.
+     */
     public static double totalAmount(int year, int month) {
         String sql = "SELECT SUM(amount) FROM transactions WHERE year < ?1 OR (year = ?1 AND month <= ?2);";
         try (Connection conn = connect();
