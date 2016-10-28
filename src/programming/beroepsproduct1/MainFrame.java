@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
@@ -74,7 +75,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         boxMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December" }));
-        boxMonth.setSelectedIndex(5);
+        boxMonth.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
         boxMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boxMonthActionPerformed(evt);
