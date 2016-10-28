@@ -1,27 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programming.beroepsproduct1;
 
 import javax.swing.*;
 
-/**
- *
- * @author Frenky
- */
 public class TransactionDialog extends javax.swing.JDialog {
-
     int id = 0;
     int year;
     int month;
-    
+
     /**
      * Creates new form TransactionDialog
      */
     public TransactionDialog(java.awt.Frame parent, boolean modal, int year, int month) {
         super(parent, modal);
+
         initComponents();
         this.year = year;
         this.month = month;
@@ -32,8 +23,8 @@ public class TransactionDialog extends javax.swing.JDialog {
      */
     public TransactionDialog(java.awt.Frame parent, boolean modal, Transactie transactie) {
         super(parent, modal);
-        initComponents();
 
+        initComponents();
         this.id = transactie.getId();
         this.year = year;
         this.month = month;
@@ -125,7 +116,7 @@ public class TransactionDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         if (txtTitel.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Je moet een titel invoeren", "Geen titel ingevoerd", JOptionPane.ERROR_MESSAGE);

@@ -1,58 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programming.beroepsproduct1;
 
-import java.awt.Component;
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.awt.*;
 
-/**
- *
- * @author Frenky
- */
 public class Transactionrender extends JPanel implements ListCellRenderer<Transactie> {
+    public Transactionrender() {
+        super();
 
-   public Transactionrender(){
-       super();
-       setOpaque(true);
-       setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-       setBorder(BorderFactory.createEmptyBorder(2,5, 2, 5));
-   }
-    
+        setOpaque(true);
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+    }
+
     @Override
     public Component getListCellRendererComponent(JList<? extends Transactie> list, Transactie transactie, int index, boolean isSelected, boolean cellHasFocus) {
         setComponentOrientation(list.getComponentOrientation());
-        
+
         JLabel title = new JLabel(transactie.getTitle(), SwingConstants.LEFT);
         CurrencyLabel amount = new CurrencyLabel(transactie.getBedrag(), SwingConstants.RIGHT);
-        
+
         removeAll();
         add(title);
         add(Box.createHorizontalGlue());
         add(amount);
-        
-        if(isSelected){
+
+        if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());
-        }else{
+        } else {
             // Fix for Nimbus background color.
             setBackground(new Color(list.getBackground().getRGB()));
             setForeground(new Color(list.getForeground().getRGB()));
         }
-        
+
         setEnabled(true);
         setFont(list.getFont());
-        
-    return this;
+
+        return this;
     }
 }

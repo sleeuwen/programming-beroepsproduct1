@@ -1,33 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programming.beroepsproduct1;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import javax.swing.AbstractAction;
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultListModel;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 
-/**
- *
- * @author Frenky
- */
 public class MainFrame extends javax.swing.JFrame {
-    
     /**
      * Creates new form MainFrame
      */
@@ -166,18 +144,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    public int getboxYear(){
-        int year = Integer.parseInt((String)boxYear.getSelectedItem());
-        return year;
+
+    public int getboxYear() {
+        return Integer.parseInt((String) boxYear.getSelectedItem());
     }
-    
-     public int getboxMonth(){
-        int month = boxMonth.getSelectedIndex();
-        return month;
+
+    public int getboxMonth() {
+        return boxMonth.getSelectedIndex();
     }
-     
-    public void populateList(){
+
+    public void populateList() {
         AbstractListModel listModel = new AbstractListModel<Transactie>() {
             private final ArrayList<Transactie> list = Database.select(getboxYear(), getboxMonth());
 
@@ -191,25 +167,26 @@ public class MainFrame extends javax.swing.JFrame {
                 return list.get(i);
             }
         };
+
         list.setModel(listModel);
         updateTotal();
     }
-    
-    public void updateTotal(){
+
+    public void updateTotal() {
         double total = Database.totalBedrag(getboxYear(), getboxMonth());
         int year = getboxYear();
         int month = getboxMonth() - 1;
-        
-        if(month < 0){
+
+        if (month < 0) {
             month = 11;
-            year --;
+            year--;
         }
         double total2 = Database.totalBedrag(year, month);
         this.previousTotal.setAmount(total2);
         this.monthTotal.setAmount(total - total2);
         this.total.setAmount(total);
     }
-    
+
     private void btnTransactieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransactieActionPerformed
         TransactionDialog f = new TransactionDialog(this, true, getboxYear(), getboxMonth());
         f.setVisible(true);
@@ -234,7 +211,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_boxMonthActionPerformed
 
     private void listMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMousePressed
-        if(evt.isPopupTrigger()){
+        if (evt.isPopupTrigger()) {
             list.setSelectedIndex(list.locationToIndex(evt.getPoint()));
 
             JMenuItem edit = new JMenuItem(new AbstractAction("Bewerken") {
