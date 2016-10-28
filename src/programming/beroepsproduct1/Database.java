@@ -106,7 +106,7 @@ public class Database {
      }
       
      public static double totalBedrag(int jaar, int maand){
-        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar <="+ jaar +" AND maand <="+maand+";";
+        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar <"+ jaar +" OR (jaar = "+ jaar +" AND maand <="+maand+");";
          try (Connection conn = connect();
             Statement stmt = conn.createStatement(); 
             ResultSet rs = stmt.executeQuery(sql)){
