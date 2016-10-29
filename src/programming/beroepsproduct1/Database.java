@@ -1,135 +1,135 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package programming.beroepsproduct1;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author Frenky
- */
 public class Database {
-    
-    public static void init(){
-        String sql = "CREATE TABLE IF NOT EXISTS transacties (" +
+    private static final String DB_NAME = "transactions.db";
+    private static final String DB_URL = "jdbc:sqlite:" + DB_NAME;
+
+    private static Connection connect() throws SQLException {
+        return DriverManager.getConnection(DB_URL);
+    }
+
+    public static void init() {
+        String sql = "CREATE TABLE IF NOT EXISTS transactions (" +
                 "id INTEGER PRIMARY KEY," +
-                "titel TEXT NOT NULL," +
-                "bedrag REAL NOT NULL," +
-                "jaar INT NOT NULL," +
-                "maand INT NOT NULL" +
+                "title TEXT NOT NULL," +
+                "amount REAL NOT NULL," +
+                "year INT NOT NULL," +
+                "month INT NOT NULL" +
                 ");";
 
         try (Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    } 
-    
-     private static Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:Database.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return conn;
-     }     
-     
-     public static void insert(String titel, double bedrag, int jaar, int maand){
-         String sql = "INSERT INTO transacties (titel, bedrag, jaar, maand) VALUES (?, ?, ?, ?);";
+    }
+
+    /**
+     * Insert a new transaction into the database.
+     */
+    public static void insert(String title, double amount, int year, int month) {
+        String sql = "INSERT INTO transactions (title, amount, year, month) VALUES (?, ?, ?, ?);";
 
         try (Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, titel);
-            stmt.setDouble(2, bedrag);
-            stmt.setInt(3, jaar);
-            stmt.setInt(4, maand);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, title);
+            stmt.setDouble(2, amount);
+            stmt.setInt(3, year);
+            stmt.setInt(4, month);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-     }
-     
-     public static void remove(int id){
-         String sql = "DELETE FROM transacties WHERE id = ?;";
+    }
+
+    /**
+     * Remove a transaction from the database.
+     */
+    public static void remove(int id) {
+        String sql = "DELETE FROM transactions WHERE id = ?;";
 
         try (Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-     }
-     
-     public static void update(int id, String titel, double bedrag){
-         String sql = "UPDATE transacties SET titel = ?, bedrag = ? WHERE id = ?;";
+    }
+
+    /**
+     * Update the details of a given transaction in the database.
+     */
+    public static void update(int id, String title, double amount) {
+        String sql = "UPDATE transactions SET title = ?, amount = ? WHERE id = ?;";
 
         try (Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, titel);
-            stmt.setDouble(2, bedrag);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, title);
+            stmt.setDouble(2, amount);
             stmt.setInt(3, id);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-     }
-     
-      public static ArrayList<Transactie> select(int jaar, int maand){
-        ArrayList<Transactie> transacties = new ArrayList<>();
-        String sql = "SELECT id, titel, bedrag, jaar, maand FROM transacties WHERE jaar = ? AND maand = ?;";
+    }
+
+    /**
+     * Retrieve all transactions for the given year and month.
+     */
+    public static ArrayList<Transaction> select(int year, int month) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT id, title, amount, year, month FROM transactions WHERE year = ? AND month = ?;";
 
         try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)){
-            stmt.setInt(1, jaar);
-            stmt.setInt(2, maand);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
 
             ResultSet rs = stmt.executeQuery();
-            
+
             // loop through the result set
             while (rs.next()) {
-                transacties.add(
-                    new Transactie(rs.getInt("id"), rs.getString("titel"), rs.getDouble("bedrag"), rs.getInt("jaar"), rs.getInt("maand"))
-                );
+                transactions.add(new Transaction(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getDouble("amount"),
+                        rs.getInt("year"),
+                        rs.getInt("month")
+                ));
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
-        return transacties;
-     }
-      
-     public static double totalBedrag(int jaar, int maand){
-        String sql = "SELECT SUM(bedrag) FROM transacties WHERE jaar < ?1 OR (jaar = ?1 AND maand <= ?2);";
-         try (Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
-             stmt.setInt(1, jaar);
-             stmt.setInt(2, maand);
+        return transactions;
+    }
 
-             ResultSet rs = stmt.executeQuery();
+    /**
+     * Retrieve the user's balance up until a given year and month.
+     */
+    public static double totalAmount(int year, int month) {
+        String sql = "SELECT SUM(amount) FROM transactions WHERE year < ?1 OR (year = ?1 AND month <= ?2);";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
 
-             rs.next();
-             return rs.getDouble(1);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            return rs.getDouble(1);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-         return 0;
+
+        return 0;
     }
 }
