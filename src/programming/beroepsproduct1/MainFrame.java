@@ -2,8 +2,8 @@ package programming.beroepsproduct1;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainFrame extends javax.swing.JFrame {
     /**
@@ -44,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        boxYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2011", "2012", "2013", "2014", "2015", "2016", "2017" }));
+        boxYear.setModel(getBoxYearModel());
         boxYear.setSelectedIndex(5);
         boxYear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(boxYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(boxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                         .addComponent(btnAdd))
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -141,7 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
      * The currently selected year.
      */
     private int getSelectedYear() {
-        return Integer.parseInt((String) boxYear.getSelectedItem());
+        return (int) boxYear.getSelectedItem();
     }
 
     /**
@@ -155,19 +155,13 @@ public class MainFrame extends javax.swing.JFrame {
      * Update the list with the transactions from the database.
      */
     private void updateList() {
-        AbstractListModel<Transaction> listModel = new AbstractListModel<Transaction>() {
-            private final ArrayList<Transaction> list = Database.select(getSelectedYear(), getSelectedMonth());
+        DefaultListModel<Transaction> listModel = new DefaultListModel<>();
+        List<Transaction> transactions = Database.select(getSelectedYear(), getSelectedMonth());
 
-            @Override
-            public int getSize() {
-                return list.size();
-            }
-
-            @Override
-            public Transaction getElementAt(int i) {
-                return list.get(i);
-            }
-        };
+        // Add every transaction from the database to the list model.
+        for (Transaction t : transactions) {
+            listModel.addElement(t);
+        }
 
         list.setModel(listModel);
         updateTotal();
@@ -190,6 +184,18 @@ public class MainFrame extends javax.swing.JFrame {
         this.previousTotal.setAmount(previousTotal);
         this.monthTotal.setAmount(total - previousTotal);
         this.total.setAmount(total);
+    }
+
+    private ComboBoxModel<Integer> getBoxYearModel() {
+        // Cannot use int[] here as the DefaultComboBoxModel doesn't have a matching constructor.
+        Integer[] years = new Integer[7];
+        int startYear = Calendar.getInstance().get(Calendar.YEAR) - 5;
+
+        for (int i = 0; i < years.length; i++) {
+            years[i] = startYear + i;
+        }
+
+        return new DefaultComboBoxModel<>(years);
     }
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -249,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxMonth;
-    private javax.swing.JComboBox<String> boxYear;
+    private javax.swing.JComboBox<Integer> boxYear;
     private javax.swing.JButton btnAdd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
